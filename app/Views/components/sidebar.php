@@ -15,7 +15,7 @@
                 <i class="bi bi-cart-check"></i>
                 <span>Keranjang</span>
             </a>
-        </li><!-- End Keranjang Nav -->
+        </li><!-- End Keranjang Nav --> 
         <?php
         if (session()->get('role') == 'admin') {
         ?>
@@ -25,23 +25,29 @@
                     <span>Produk</span>
                 </a>
             </li><!-- End Produk Nav -->
+                   <li class="nav-item">
+                <a class="nav-link <?php echo (uri_string() == 'kategori') ? "" : "collapsed" ?>" href="kategori">
+                    <i class="bi bi-tags"></i>
+                    <span>Produk Kategori</span>
+                </a>
+            </li><!-- End Produk Kategori Nav -->
         <?php
         }
+
         ?>
-        
         <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('contact')?>">
-                <i class="bi bi-envelope"></i>
-                <span>contact</span>
-            </a>
-        </li><!-- End contact Nav -->
+        <a class="nav-link" href="<?= base_url('logout') ?>">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Log Out</span>
+       </a>
+        </li><!-- End Log Out Nav -->
 
         <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('logout')?>">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Log Out</span>
-            </a>
-        </li><!-- End Log Out Nav -->
+    <a class="nav-link" href="<?= base_url('contact') ?>">
+        <i class="bi bi-envelope"></i>
+        <span>Contact</span>
+    </a>
+</li><!-- End Contact Nav -->
     </ul>
 
 </aside><!-- End Sidebar-->

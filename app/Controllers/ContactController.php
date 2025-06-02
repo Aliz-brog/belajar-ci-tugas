@@ -11,4 +11,5 @@ class ContactController extends BaseController
     {
         return view('v_contact');
     }
+    
 }

@@ -175,7 +175,7 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Alif</h6>
+              <h6>Aliff</h6>
               <span>Web Designer</span>
             </li>
             <li>

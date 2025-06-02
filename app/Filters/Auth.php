@@ -21,5 +21,9 @@ class Auth implements FilterInterface
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
         // Do something here
+        $currentPath = $request->getUri()->getPath();
+        if (session()->has('isLoggedIn') && $currentPath === 'login') {
+            return redirect()->to(site_url('/')); // Arahkan ke halaman utama
+        }
     }
 }
