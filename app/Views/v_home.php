@@ -32,6 +32,6 @@ if (session()->getFlashData('success')) {
         </div>
     <?php endforeach ?>
 </div>
-<!-- End Table with stripped rows -->
+<!-- End Table with stripped r3ows -->
 <?= $this->endSection() ?>
 
