@@ -32,7 +32,7 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
 
 ## Persyaratan Sistem
 
-- PHP >= 7.4
+- PHP >= 8.2
 - Composer
 - Web server (XAMPP)
 
@@ -62,6 +62,9 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
    php spark db:seed ProductSeeder
    ```
    ```bash
+   php spark db:seed ProducCategorytSeeder
+   ```
+   ```bash
    php spark db:seed UserSeeder
    ```
 6. **Jalankan server**
@@ -76,14 +79,30 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
 Proyek menggunakan struktur MVC CodeIgniter 4:
 
 - app/Controllers - Logika aplikasi dan penanganan request
-  - AuthController.php - Autentikasi pengguna
-  - ProdukController.php - Manajemen produk
-  - TransaksiController.php - Proses transaksi
+  - AuthController.php            - Autentikasi pengguna (login, register, logout, dll)
+  - BaseController.php            - Controller dasar yang biasanya digunakan untuk inheritance controller lain
+  - ContactController.php         - Menangani halaman/formulir kontak dan pengiriman pesan dari user
+  - Home.php                      - Menangani halaman utama (beranda) aplikasi/website
+  - Location.php                  - Menangani data lokasi (provinsi, kota, kecamatan, kelurahan, dll)
+  - ProductCategoryController.php - Manajemen kategori produk (tambah, edit, hapus kategori)
+  - ProdukController.php          - Manajemen produk (tambah, edit, hapus, detail produk)
+  - TransaksiController.php       - Proses transaksi (checkout, pembayaran, riwayat transaksi)
 - app/Models - Model untuk interaksi database
-  - ProductModel.php - Model produk
-  - UserModel.php - Model pengguna
+  - ProductModel.php              - Model produk
+  - ProductCategoryModel.php      - Model produk category
+  - TransactionModel.php          - Model transaction
+  - TransactionDetailModel.php    - Model transaction detail
+  - UserModel.php                 - Model pengguna
 - app/Views - Template dan komponen UI
-  - v_produk.php - Tampilan produk
-  - v_keranjang.php - Halaman keranjang
+  - layout_clear.php              - Layout dasar tanpa elemen tambahan (biasanya untuk halaman khusus)
+  - layout.php                    - Layout utama yang digunakan untuk membungkus tampilan halaman lain
+  - v_checkout.php                - Halaman checkout (proses pembayaran dan pengisian alamat)
+  - v_contact.php                 - Halaman kontak (formulir untuk menghubungi admin)
+  - v_home.php                    - Halaman utama/beranda website
+  - v_kategori.php                - Tampilan daftar kategori produk
+  - v_keranjang.php               - Halaman keranjang belanja
+  - v_login.php                   - Halaman login pengguna
+  - v_produk.php                  - Tampilan daftar produk
+  - v_produkPDF.php               - Tampilan produk dalam format PDF (biasanya untuk export/print)
 - public/img - Gambar produk dan aset
 - public/NiceAdmin - Template admin

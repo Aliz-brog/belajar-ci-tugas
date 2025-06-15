@@ -36,18 +36,14 @@ $routes->group('keranjang', ['filter' => 'auth'], function ($routes) {
     $routes->get('clear', 'TransaksiController::cart_clear');
 });
 
-$routes->get('produk', 'ProdukController::index', ['filter' => 'auth']);
-$routes->post('produk', 'ProdukController::create', ['filter' => 'auth']);
-$routes->post('produk/edit/(:any)', 'ProdukController::edit/$1', ['filter' => 'auth']);
-$routes->get('produk/delete/(:any)', 'ProdukController::delete/$1', ['filter' => 'auth']);
+$routes->get('checkout', 'TransaksiController::checkout', ['filter' => 'auth']);
 
-$routes->get('kategori', 'ProductCategoryController::index', ['filter' => 'auth']);
-$routes->post('kategori', 'ProductCategoryController::create', ['filter' => 'auth']);
-$routes->post('kategori/edit/(:any)', 'ProductCategoryController::edit/$1', ['filter' => 'auth']);
-$routes->get('kategori/delete/(:any)', 'ProductCategoryController::delete/$1', ['filter' => 'auth']);
+$routes->get('get-location', 'Location::getKelurahan');
+$routes->get('get-cost', 'TransaksiController::getCost');
 
 
-
+$routes->post('buy', 'TransaksiController::buy');
 
 $routes->get('keranjang', 'TransaksiController::index', ['filter' => 'auth']);
 $routes->get('contact', 'ContactController::index', ['filter' => 'auth']);
+$routes->post('contact', 'ContactController::create', ['filter' => 'auth']);
