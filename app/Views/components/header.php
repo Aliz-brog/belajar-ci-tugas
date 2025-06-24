@@ -2,10 +2,11 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="<?= base_url()?>NiceAdmin/assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">Geng 4G</span>
-      </a>
+    <div class="d-flex align-items-center">
+        <img src="<?= base_url() ?>NiceAdmin/assets/img/logo.png" alt="" style="height:40px; margin-right:10px;">
+        <span class="d-none d-lg-block" style="font-weight:bold; margin-right:20px;">Toko</span>
+        <a href="http://localhost/dashboard-toko/" class="btn btn-primary btn-sm">Dashboard TOKO</a>
+      </div>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
