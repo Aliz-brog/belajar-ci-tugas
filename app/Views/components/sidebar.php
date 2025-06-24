@@ -33,8 +33,14 @@
             </li><!-- End Produk Kategori Nav -->
         <?php
         }
-
         ?>
+        <li class="nav-item">
+            <a class="nav-link <?php echo (uri_string() == 'profile') ? "" : "collapsed" ?>" href="profile">
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+            </a>
+        </li><!-- End Profile Nav -->
+
         <li class="nav-item">
         <a class="nav-link" href="<?= base_url('logout') ?>">
         <i class="bi bi-box-arrow-right"></i>
