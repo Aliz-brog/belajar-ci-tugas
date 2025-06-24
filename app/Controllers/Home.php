@@ -2,17 +2,23 @@
 
 namespace App\Controllers;
 
-use App\Models\ProductModel; 
+use App\Models\ProductModel;
+use App\Models\TransactionModel;
+use App\Models\TransactionDetailModel;
 
 class Home extends BaseController
 {
     protected $product;
+    protected $transaction;
+    protected $transaction_detail;
 
     function __construct()
     {
         helper('number');
         helper('form');
         $this->product = new ProductModel();
+        $this->transaction = new TransactionModel();
+        $this->transaction_detail = new TransactionDetailModel();
     }
 
     public function index()
