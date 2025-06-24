@@ -43,6 +43,7 @@ $routes->get('get-cost', 'TransaksiController::getCost');
 
 
 $routes->post('buy', 'TransaksiController::buy');
+$routes->get('api', 'ApiController::index');
 
 $routes->get('keranjang', 'TransaksiController::index', ['filter' => 'auth']);
 $routes->get('contact', 'ContactController::index', ['filter' => 'auth']);
