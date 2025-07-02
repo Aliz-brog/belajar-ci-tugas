@@ -41,7 +41,7 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
 1. **Clone repository ini**
    ```bash
    git clone [URL repository]
-   cd belajar-ci-tugas
+   cd ficky-ci-tugas
    ```
 2. **Install dependensi**
    ```bash
@@ -67,6 +67,9 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
    ```bash
    php spark db:seed UserSeeder
    ```
+   ```bash
+   php spark db:seed DiskonSeeder
+   ```
 6. **Jalankan server**
    ```bash
    php spark serve
@@ -79,30 +82,40 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
 Proyek menggunakan struktur MVC CodeIgniter 4:
 
 - app/Controllers - Logika aplikasi dan penanganan request
+  - ApiController.php             - Controller khusus untuk endpoint API di aplikasi
   - AuthController.php            - Autentikasi pengguna (login, register, logout, dll)
   - BaseController.php            - Controller dasar yang biasanya digunakan untuk inheritance controller lain
   - ContactController.php         - Menangani halaman/formulir kontak dan pengiriman pesan dari user
+  - DiskonController.php          - menangani semua proses terkait data diskon di aplikasi
   - Home.php                      - Menangani halaman utama (beranda) aplikasi/website
   - Location.php                  - Menangani data lokasi (provinsi, kota, kecamatan, kelurahan, dll)
   - ProductCategoryController.php - Manajemen kategori produk (tambah, edit, hapus kategori)
   - ProdukController.php          - Manajemen produk (tambah, edit, hapus, detail produk)
   - TransaksiController.php       - Proses transaksi (checkout, pembayaran, riwayat transaksi)
 - app/Models - Model untuk interaksi database
+  - DiskonModel.php               - Model diskon
   - ProductModel.php              - Model produk
   - ProductCategoryModel.php      - Model produk category
   - TransactionModel.php          - Model transaction
   - TransactionDetailModel.php    - Model transaction detail
   - UserModel.php                 - Model pengguna
-- app/Views - Template dan komponen UI
+- app/Views/components - Template dan komponen UI
+  - footer.php                    - komponen tampilan (view) yang digunakan untuk menampilkan bagian bawah (footer) dari setiap halaman website atau aplikasi 
+  - header.php                    - komponen tampilan (view) yang digunakan untuk menampilkan bagian atas (header) dari setiap halaman website atau aplikasi
+  - sidebar.php                   - komponen tampilan (view) yang digunakan untuk menampilkan menu samping (sidebar) pada aplikasi atau website 
   - layout_clear.php              - Layout dasar tanpa elemen tambahan (biasanya untuk halaman khusus)
   - layout.php                    - Layout utama yang digunakan untuk membungkus tampilan halaman lain
   - v_checkout.php                - Halaman checkout (proses pembayaran dan pengisian alamat)
   - v_contact.php                 - Halaman kontak (formulir untuk menghubungi admin)
+  - v_diskon.php                  - Digunakan untuk menampilkan halaman pengelolaan diskon di aplikasi
   - v_home.php                    - Halaman utama/beranda website
   - v_kategori.php                - Tampilan daftar kategori produk
   - v_keranjang.php               - Halaman keranjang belanja
   - v_login.php                   - Halaman login pengguna
   - v_produk.php                  - Tampilan daftar produk
   - v_produkPDF.php               - Tampilan produk dalam format PDF (biasanya untuk export/print)
+  - v_prifile.php                 - Tampilan prifile
 - public/img - Gambar produk dan aset
+- public/dashboard-toko
+  - index.php                     - Halaman utama dashboard toko yang menampilkan data dan aktivitas toko secara real-time, serta menjadi pusat kontrol bagi user/admin toko
 - public/NiceAdmin - Template admin

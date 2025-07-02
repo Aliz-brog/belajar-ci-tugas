@@ -34,7 +34,22 @@ if (session()->getFlashData('success')) {
                     <td><img src="<?php echo base_url() . "img/" . $item['options']['foto'] ?>" width="100px"></td>
                     <td><?php echo number_to_currency($item['price'], 'IDR') ?></td>
                     <td><input type="number" min="1" name="qty<?php echo $i++ ?>" class="form-control" value="<?php echo $item['qty'] ?>"></td>
-                    <td><?php echo number_to_currency($item['subtotal'], 'IDR') ?></td>
+                    <td>
+                        <?php
+                        $diskon = isset($item['options']['diskon']) ? $item['options']['diskon'] : 0;
+                        $harga_awal = $item['price'] * $item['qty'];
+                        $harga_setelah_diskon = ($item['price'] - $diskon) * $item['qty'];
+                        if ($harga_setelah_diskon < 0) $harga_setelah_diskon = 0;
+                        // Harga sebelum diskon (coret)
+                        echo '<span style="text-decoration:line-through;color:#888;font-size:0.9em">' . number_to_currency($harga_awal, 'IDR') . '</span><br>';
+                        // Harga setelah diskon
+                        echo '<span style="font-weight:bold;color:#1a7f37">' . number_to_currency($harga_setelah_diskon, 'IDR') . '</span>';
+                        // Info diskon
+                        if ($diskon > 0) {
+                            echo '<br><span style="color:#e67e22;font-size:0.9em">Diskon: -' . number_to_currency($diskon * $item['qty'], 'IDR') . '</span>';
+                        }
+                        ?>
+                    </td>
                     <td>
                         <a href="<?php echo base_url('keranjang/delete/' . $item['rowid'] . '') ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                     </td>
@@ -47,7 +62,20 @@ if (session()->getFlashData('success')) {
 </table>
 <!-- End Table with stripped rows -->
 <div class="alert alert-info">
-    <?php echo "Total = " . number_to_currency($total, 'IDR') ?>
+    <?php
+    $total_sebelum_diskon = 0;
+    $total_diskon = 0;
+    if (!empty($items)) {
+        foreach ($items as $item) {
+            $diskon = isset($item['options']['diskon']) ? $item['options']['diskon'] : 0;
+            $total_sebelum_diskon += $item['price'] * $item['qty'];
+            $total_diskon += $diskon * $item['qty'];
+        }
+    }
+    echo "Total Sebelum Diskon = " . number_to_currency($total_sebelum_diskon, 'IDR') . "<br>";
+    echo "Total Diskon = " . number_to_currency($total_diskon, 'IDR') . "<br>";
+    echo "<b>Total Setelah Diskon = " . number_to_currency($total, 'IDR') . "</b>";
+    ?>
 </div>
 
 <button type="submit" class="btn btn-primary">Perbarui Keranjang</button>

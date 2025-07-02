@@ -16,6 +16,12 @@
                 <span>Keranjang</span>
             </a>
         </li><!-- End Keranjang Nav --> 
+                <li class="nav-item">
+            <a class="nav-link" href="<?= base_url('diskon') ?>">
+                <i class="bi bi-percent"></i>
+                <span>Diskon</span>
+            </a>
+        </li><!-- End Diskon Nav -->
         <?php
         if (session()->get('role') == 'admin') {
         ?>

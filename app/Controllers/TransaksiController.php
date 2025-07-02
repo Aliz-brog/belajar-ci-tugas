@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\TransactionModel;
 use App\Models\TransactionDetailModel;
+use App\Models\DiskonModel;
 
 class TransaksiController extends ResourceController
 {
@@ -27,19 +28,35 @@ class TransaksiController extends ResourceController
 
     public function index()
     {
-        $data['items'] = $this->cart->contents();
-        $data['total'] = $this->cart->total();
+        $items = $this->cart->contents();
+        $total = 0;
+        foreach ($items as $item) {
+            $diskon = isset($item['options']['diskon']) ? $item['options']['diskon'] : 0;
+            $harga_setelah_diskon = ($item['price'] - $diskon) * $item['qty'];
+            if ($harga_setelah_diskon < 0) $harga_setelah_diskon = 0;
+            $total += $harga_setelah_diskon;
+        }
+        $data['items'] = $items;
+        $data['total'] = $total;
         return view('v_keranjang', $data);
     }
 
     public function cart_add()
     {
+        $diskonModel = new \App\Models\DiskonModel();
+        $today = date('Y-m-d');
+        $diskonRow = $diskonModel->where('tanggal', $today)->first();
+        $diskon = $diskonRow ? $diskonRow['nominal'] : 0;
+
         $this->cart->insert(array(
             'id'        => $this->request->getPost('id'),
             'qty'       => 1,
             'price'     => $this->request->getPost('harga'),
             'name'      => $this->request->getPost('nama'),
-            'options'   => array('foto' => $this->request->getPost('foto'))
+            'options'   => array(
+                'foto' => $this->request->getPost('foto'),
+                'diskon' => $diskon
+            )
         ));
         session()->setflashdata('success', 'Produk berhasil ditambahkan ke keranjang. (<a href="' . base_url() . 'keranjang">Lihat</a>)');
         return redirect()->to(base_url('/'));
@@ -75,8 +92,16 @@ class TransaksiController extends ResourceController
 
     public function checkout()
     {
-        $data['items'] = $this->cart->contents();
-        $data['total'] = $this->cart->total();
+        $items = $this->cart->contents();
+        $total = 0;
+        foreach ($items as $item) {
+            $diskon = isset($item['options']['diskon']) ? $item['options']['diskon'] : 0;
+            $harga_setelah_diskon = ($item['price'] - $diskon) * $item['qty'];
+            if ($harga_setelah_diskon < 0) $harga_setelah_diskon = 0;
+            $total += $harga_setelah_diskon;
+        }
+        $data['items'] = $items;
+        $data['total'] = $total;
         return view('v_checkout', $data);
     }
 
@@ -127,7 +152,7 @@ class TransaksiController extends ResourceController
     }
 
     public function buy()
-    {
+    { 
         if ($this->request->getPost()) { 
             $dataForm = [
                 'username' => $this->request->getPost('username'),
@@ -144,16 +169,24 @@ class TransaksiController extends ResourceController
             $last_insert_id = $this->transaction->getInsertID();
 
             foreach ($this->cart->contents() as $value) {
+                // Ambil diskon dari cart/session jika ada
+                $diskon = 0;
+                if (isset($value['diskon'])) {
+                    $diskon = $value['diskon'];
+                } elseif (isset($value['options']['diskon'])) {
+                    $diskon = $value['options']['diskon'];
+                }
+                $harga_setelah_diskon = $value['price'] - $diskon;
+                if ($harga_setelah_diskon < 0) $harga_setelah_diskon = 0;
                 $dataFormDetail = [
                     'transaction_id' => $last_insert_id,
                     'product_id' => $value['id'],
                     'jumlah' => $value['qty'],
-                    'diskon' => 0,
-                    'subtotal_harga' => $value['qty'] * $value['price'],
+                    'diskon' => $diskon,
+                    'subtotal_harga' => $value['qty'] * $harga_setelah_diskon,
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
                 ];
-
                 $this->transaction_detail->insert($dataFormDetail);
             }
 
@@ -162,4 +195,31 @@ class TransaksiController extends ResourceController
             return redirect()->to(base_url());
         }
     }
+
+    public function apiTransaksi()
+    {
+        $transaksiModel = new \App\Models\TransactionModel();
+        $detailModel = new \App\Models\TransactionDetailModel();
+
+        $transaksi = $transaksiModel->findAll();
+        foreach ($transaksi as &$t) {
+            // Hitung jumlah item untuk transaksi ini
+            $jumlahItem = $detailModel->where('transaction_id', $t['id'])->selectSum('jumlah')->first();
+            $t['jumlah_item'] = $jumlahItem['jumlah'] ?? 0;
+            // Hitung total diskon untuk transaksi ini
+            $totalDiskon = $detailModel->where('transaction_id', $t['id'])->selectSum('diskon')->first();
+            $t['total_diskon'] = $totalDiskon['diskon'] ?? 0;
+        }
+        return $this->response->setJSON($transaksi);
+    }
+
+    public function selesaikan($id)
+    {
+        $model = new \App\Models\TransactionModel();
+        $model->update($id, ['status' => 1]);
+        return redirect()->back()->with('success', 'Transaksi berhasil diselesaikan.');
+    }
 }
+
+
+
