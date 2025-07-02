@@ -1,5 +1,6 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('content') ?>
+
 <?php
 if (session()->getFlashData('success')) {
 ?>
@@ -20,6 +21,7 @@ if (session()->getFlashData('success')) {
             echo form_hidden('nama', $item['nama']);
             echo form_hidden('harga', $item['harga']);
             echo form_hidden('foto', $item['foto']);
+            echo form_hidden('diskon', isset($item['diskon']) ? (string)$item['diskon'] : '0');
             ?>
             <div class="card">
                 <div class="card-body">
@@ -34,4 +36,3 @@ if (session()->getFlashData('success')) {
 </div>
 <!-- End Table with stripped rows -->
 <?= $this->endSection() ?>
-

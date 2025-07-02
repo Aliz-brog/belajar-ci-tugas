@@ -1,35 +1,50 @@
 <?php
 
 namespace App\Controllers;
-
-use App\Models\ProductModel;
+use App\Models\ProductModel; 
 use App\Models\TransactionModel;
 use App\Models\TransactionDetailModel;
 
 class Home extends BaseController
 {
-    protected $product;
-    protected $transaction;
-    protected $transaction_detail;
 
-    function __construct()
-    {
-        helper('number');
-        helper('form');
-        $this->product = new ProductModel();
-        $this->transaction = new TransactionModel();
-        $this->transaction_detail = new TransactionDetailModel();
-    }
+        protected $product;
+        protected $transaction;
+        protected $transaction_detail;
 
-    public function index()
-    {
-        $product = $this->product->findAll();
-        $data['product'] = $product;
+        function __construct()
+        {
+            helper('number');
+            helper('form');
+            $this->product = new ProductModel();
+            $this->transaction = new TransactionModel();
+            $this->transaction_detail = new TransactionDetailModel();
+        }
 
-        return view('v_home', $data);
-    }
+        public function index()
+        {
+            $product = $this->product->findAll();
+            $diskonModel = new \App\Models\DiskonModel();
+            $today = date('Y-m-d');
+            $diskon = $diskonModel->where('tanggal', $today)->first();
+            $nominal_diskon = $diskon ? $diskon['nominal'] : 0;
 
-           public function profile()
+            // Simpan nominal diskon ke session untuk diakses di header
+            if ($nominal_diskon > 0) {
+                session()->set('diskon_nominal', $nominal_diskon);
+            } else {
+                session()->remove('diskon_nominal');
+            }
+
+            foreach ($product as &$p) {
+                $p['diskon'] = $nominal_diskon;
+            }
+            $data['product'] = $product;
+            $data['pesan_diskon'] = $diskon ? 'Diskon hari ini: ' . number_to_currency($diskon['nominal'], 'IDR') : null;
+            return view('v_home', $data);
+        }
+
+        public function profile()
 {
     $username = session()->get('username');
     $data['username'] = $username;
@@ -54,4 +69,6 @@ class Home extends BaseController
     return view('v_profile', $data);
 }
 
+        
+    
 }
