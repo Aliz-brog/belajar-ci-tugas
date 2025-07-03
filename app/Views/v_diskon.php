@@ -74,6 +74,7 @@
           <div class="mb-3">
             <label for="tanggal" class="form-label">Tanggal</label>
             <input type="date" class="form-control" id="tanggal" name="tanggal" required value="<?= old('tanggal') ?>">
+            <small class="text-danger">* Tidak boleh menambah data diskon dengan tanggal yang sama</small>
           </div>
           <div class="mb-3">
             <label for="nominal" class="form-label">Nominal (Rp)</label>

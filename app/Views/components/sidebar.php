@@ -16,12 +16,14 @@
                 <span>Keranjang</span>
             </a>
         </li><!-- End Keranjang Nav --> 
-                <li class="nav-item">
+        <?php if (session()->get('role') == 'admin'): ?>
+        <li class="nav-item">
             <a class="nav-link" href="<?= base_url('diskon') ?>">
                 <i class="bi bi-percent"></i>
                 <span>Diskon</span>
             </a>
         </li><!-- End Diskon Nav -->
+        <?php endif; ?>
         <?php
         if (session()->get('role') == 'admin') {
         ?>
@@ -60,6 +62,14 @@
         <span>Contact</span>
     </a>
 </li><!-- End Contact Nav -->
+<?php if (session()->get('role') == 'admin'): ?>
+        <li class="nav-item">
+            <a class="nav-link" href="http://localhost/dashboard-toko/" target="_blank">
+                <i class="bi bi-bar-chart"></i>
+                <span>Dashboard TOKO</span>
+            </a>
+        </li><!-- End Dashboard TOKO Nav -->
+        <?php endif; ?>
     </ul>
 
 </aside><!-- End Sidebar-->

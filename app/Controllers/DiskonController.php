@@ -34,7 +34,10 @@ class DiskonController extends BaseController
             'nominal' => 'required|numeric'
         ]);
         if (!$validation) {
-            return redirect()->back()->withInput()->with('validation', $this->validator);
+            $model = new DiskonModel();
+            $data['diskon'] = $model->findAll();
+            $data['validation'] = $this->validator;
+            return view('v_diskon', $data);
         }
         $model = new DiskonModel();
         $model->save([
